@@ -45,7 +45,6 @@ const MatchingGame = () => {
     );
 
     const [pagesComplete, setPagesComplete] = useState(0);
-    const [puzzlesComplete, setPuzzlesComplete] = useState(0);
     const [winningModalOpen, setWinningModalOpen] = useState(false);
     const [selectedSum, setSelectedSum] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -91,8 +90,6 @@ const MatchingGame = () => {
     };
 
     const onPairWrong = (sumIndex, answerIndex) => {
-        setSelectedSum(null);
-        setSelectedAnswer(null);
         setCurrentNumbers(
             currentNumbers.map((n, i) =>
                 parseInt(sumIndex) === i ? { ...n, wrong: true } : n
@@ -104,17 +101,15 @@ const MatchingGame = () => {
             )
         );
         setTimeout(() => {
+            setSelectedSum(null);
+            setSelectedAnswer(null);
             setJumbledAnswers(
-                jumbledAnswers.map((n, i) =>
-                    parseInt(answerIndex) === i ? { ...n, wrong: false } : n
-                )
+                jumbledAnswers.map((n, i) => ({ ...n, wrong: false }))
             );
             setCurrentNumbers(
-                currentNumbers.map((n, i) =>
-                    parseInt(sumIndex) === i ? { ...n, wrong: false } : n
-                )
+                currentNumbers.map((n, i) => ({ ...n, wrong: false }))
             );
-        }, 500);
+        }, 300);
     };
 
     const onPrizeComplete = () => {
@@ -149,22 +144,19 @@ const MatchingGame = () => {
 
     const onPageComplete = () => {
         refreshNumbers();
-        setPuzzlesComplete(0);
         const completedPages = pagesComplete + 1;
         setPagesComplete(completedPages);
         if (completedPages === pagesPerPrize) onPrizeComplete();
     };
     const onPuzzleCorrect = (key) => {
-        const numberPuzzlesComplete = puzzlesComplete + 1;
-        setCurrentNumbers(
-            currentNumbers.map((n, i) =>
-                parseInt(key) === i ? { ...n, correct: true } : n
-            )
+        const newNumbers = currentNumbers.map((n, i) =>
+            parseInt(key) === i ? { ...n, correct: true } : n
         );
-        setPuzzlesComplete(numberPuzzlesComplete);
+        setCurrentNumbers(newNumbers);
         setSelectedSum(null);
         setSelectedAnswer(null);
-        if (numberPuzzlesComplete === puzzlesPerPage) onPageComplete();
+        const numbersCorrect = newNumbers.filter((i) => i.correct);
+        if (numbersCorrect.length === puzzlesPerPage) onPageComplete();
     };
 
     useEffect(() => getNewPokemon(), []);
@@ -184,7 +176,7 @@ const MatchingGame = () => {
                 onPrizeAccepted={onPrizeAccepted}
                 pokemon={pokemon}
             />
-            <p>Match the equation with it's answer!</p>
+            <p>Match the times tables with their answer!</p>
             <Grid columns={2} style={{ height: "100px", minWidth: "400px" }}>
                 {currentNumbers.map((config, i) => (
                     <Row columns={2} key={i} verticalAlign="middle">
