@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import MatchingGame from "./MatchingGame";
+import Collections from "./Collections";
+import Settings from "./Settings";
+import { slide as Menu } from "react-burger-menu";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <div id="outer-container">
+            <main id="page-wrap">
+                <Menu width={200} className="nav-menu" left>
+                    <a class="nav-menu-item" href="/" key="1">
+                        <span>Play</span>
+                    </a>
+                    <a class="nav-menu-item" href="/collections" key="2">
+                        <span>Collections</span>
+                    </a>
+                    <a class="nav-menu-item" href="/settings" key="3">
+                        <span>Settings</span>
+                    </a>
+                </Menu>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" index element={<MatchingGame />} />
+                        <Route path="collections" element={<Collections />} />
+                        <Route path="settings" element={<Settings />} />
+                    </Routes>
+                </BrowserRouter>
+            </main>
+        </div>
+    );
+};
 
 export default App;
