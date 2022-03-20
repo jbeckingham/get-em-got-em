@@ -91,6 +91,8 @@ const MatchingGame = () => {
     };
 
     const onPairWrong = (sumIndex, answerIndex) => {
+        setSelectedSum(null);
+        setSelectedAnswer(null);
         setCurrentNumbers(
             currentNumbers.map((n, i) =>
                 parseInt(sumIndex) === i ? { ...n, wrong: true } : n
@@ -112,8 +114,6 @@ const MatchingGame = () => {
                     parseInt(sumIndex) === i ? { ...n, wrong: false } : n
                 )
             );
-            setSelectedSum(null);
-            setSelectedAnswer(null);
         }, 500);
     };
 
