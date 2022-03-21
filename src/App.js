@@ -27,6 +27,10 @@ const App = () => {
                         <Route path="settings" element={<Settings />} />
                     </Routes>
                 </BrowserRouter>
+                <p class="disclaimer">
+                    Pokémon and Pokémon character names are trademarks of
+                    Nintendo.
+                </p>
             </main>
         </div>
     );

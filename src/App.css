@@ -123,3 +123,16 @@
     font-size: 10px;
     margin: 0px;
 }
+
+.disclaimer {
+    position: fixed;
+    bottom: 28px;
+    color: grey;
+    font-size: 12px;
+    left: 6px;
+}
+
+body,
+html {
+    overflow-x: hidden;
+}
