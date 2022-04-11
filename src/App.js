@@ -4,8 +4,10 @@ import Collections from "./Collections";
 import Settings from "./Settings";
 import { slide as Menu } from "react-burger-menu";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ls from "local-storage";
 
 const App = () => {
+    const collectionType = ls("settings")?.collectionType;
     return (
         <div id="outer-container">
             <main id="page-wrap">
@@ -27,10 +29,12 @@ const App = () => {
                         <Route path="settings" element={<Settings />} />
                     </Routes>
                 </BrowserRouter>
-                <p class="disclaimer">
-                    Pokémon and Pokémon character names are trademarks of
-                    Nintendo.
-                </p>
+                {collectionType === "pokemon" && (
+                    <p class="disclaimer">
+                        Pokémon and Pokémon character names are trademarks of
+                        Nintendo.
+                    </p>
+                )}
             </main>
         </div>
     );

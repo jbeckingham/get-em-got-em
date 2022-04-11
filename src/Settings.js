@@ -1,23 +1,44 @@
 import React, { useState } from "react";
 import { Dropdown, Header } from "semantic-ui-react";
+import ls from "local-storage";
 
-const Settings = () => (
-    <div className="settings">
-        <Header>Settings</Header>
-        <span>
-            Collection type:
-            <Dropdown
-                style={{ marginLeft: "20px", marginTop: "20px" }}
-                inline
-                text="Pokemon"
-            >
-                <Dropdown.Menu>
-                    <Dropdown.Item text="Pokemon" />
-                    <Dropdown.Item disabled text="Coming soon: Footballers" />
-                </Dropdown.Menu>
-            </Dropdown>
-        </span>
-    </div>
-);
+const collectionOptions = [
+    {
+        key: "pokemon",
+        text: "Pokemon",
+        value: "pokemon",
+    },
+    {
+        key: "stars",
+        text: "Stars",
+        value: "stars",
+    },
+];
+
+const Settings = () => {
+    const settings = ls("settings") ?? {};
+    const defaultType =
+        settings["collectionType"] ?? collectionOptions[0].value;
+
+    const onCollectionTypeChanged = (event, target) => {
+        ls("settings", { ...settings, collectionType: target.value });
+    };
+
+    return (
+        <div className="settings">
+            <Header>Settings</Header>
+            <span>
+                Collection type:
+                <Dropdown
+                    style={{ marginLeft: "20px" }}
+                    inline
+                    options={collectionOptions}
+                    onChange={onCollectionTypeChanged}
+                    defaultValue={defaultType}
+                />
+            </span>
+        </div>
+    );
+};
 
 export default Settings;

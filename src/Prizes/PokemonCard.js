@@ -6,16 +6,16 @@ const parseApiText = (text) => {
     return newText.replace("-", " ");
 };
 
-const PokemonCard = ({ pokemon, size }) => {
-    const name = parseApiText(pokemon.name);
-    const imageUrl = pokemon.sprites.other["official-artwork"]["front_default"];
-    const types = pokemon.types.map((type) => parseApiText(type.type.name));
+const PokemonCard = ({ prize, size }) => {
+    const name = parseApiText(prize.name);
+    const imageUrl = prize.sprites.other["official-artwork"]["front_default"];
+    const types = prize.types.map((type) => parseApiText(type.type.name));
     const typeText = types.join(", ");
-    const moves = pokemon.moves
+    const moves = prize.moves
         .map((move) => parseApiText(move.move.name))
         .slice(0, 3)
         .join(", ");
-    console.log(pokemon);
+    console.log(prize);
     return (
         <Modal.Content image>
             <Image
@@ -36,7 +36,7 @@ const PokemonCard = ({ pokemon, size }) => {
                         <Header>{name}</Header>
                         <p>Pokemon type: {typeText}</p>
                         <p>Key moves: {moves}</p>
-                        <p>Weight: {pokemon.weight}kg</p>
+                        <p>Weight: {prize.weight}kg</p>
                     </>
                 )}
             </Modal.Description>

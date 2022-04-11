@@ -8,7 +8,21 @@ const P = new Pokedex();
 const { Row, Column } = Grid;
 
 const puzzlesPerPage = 6;
-const pagesPerPrize = 5;
+const pagesPerPrize = 1;
+const starData = [
+    { id: "red", name: "Red" },
+    { id: "orange", name: "Orange" },
+    { id: "yellow", name: "Yellow" },
+    { id: "olive", name: "Olive" },
+    { id: "green", name: "Green" },
+    { id: "teal", name: "Teal" },
+    { id: "blue", name: "Blue" },
+    { id: "violet", name: "Violet" },
+    { id: "purple", name: "Purple" },
+    { id: "pink", name: "Pink" },
+    { id: "brown", name: "Brown" },
+    { id: "grey", name: "Grey" },
+];
 
 const getNumbers = () =>
     [...Array(puzzlesPerPage)].map(() => ({
@@ -43,12 +57,12 @@ const MatchingGame = () => {
     const [jumbledAnswers, setJumbledAnswers] = useState(
         getJumlbedAnswers(numbers)
     );
-
     const [pagesComplete, setPagesComplete] = useState(0);
     const [winningModalOpen, setWinningModalOpen] = useState(false);
     const [selectedSum, setSelectedSum] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const [pokemon, setPokemon] = useState(null);
+    const [prize, setPrize] = useState(null);
+    const collectionType = ls("settings")?.collectionType;
 
     const progress = (pagesComplete / pagesPerPrize) * 100;
 
@@ -61,8 +75,14 @@ const MatchingGame = () => {
 
     const getNewPokemon = () => {
         P.getPokemonByName(Math.floor(Math.random() * 151)).then((response) => {
-            setPokemon(response);
+            setPrize(response);
         });
+    };
+
+    const getNewStar = () => {
+        const starPrize =
+            starData[Math.floor(Math.random() * (starData.length - 1))];
+        setPrize(starPrize);
     };
 
     const refreshNumbers = () => {
@@ -114,24 +134,22 @@ const MatchingGame = () => {
 
     const onPrizeComplete = () => {
         setWinningModalOpen(true);
-        addToCollection();
+        addToCollection(collectionType);
     };
 
-    const addToCollection = () => {
-        const pokemonCollection = ls("pokemon") ?? [];
-        const exists = pokemonCollection.find((item) => item.id == pokemon.id);
+    const addToCollection = (collectionType) => {
+        const collection = ls(collectionType) ?? [];
+        console.log(prize);
+        const exists = collection.find((item) => item.id == prize.id);
         if (exists) {
-            const newCollection = pokemonCollection.map((item) =>
-                item.id == pokemon.id
+            const newCollection = collection.map((item) =>
+                item.id == prize.id
                     ? { ...item, number: item.number + 1 }
                     : item
             );
-            ls("pokemon", newCollection);
+            ls(collectionType, newCollection);
         } else {
-            ls("pokemon", [
-                ...pokemonCollection,
-                { id: pokemon.id, number: 1 },
-            ]);
+            ls(collectionType, [...collection, { id: prize.id, number: 1 }]);
         }
     };
 
@@ -139,7 +157,7 @@ const MatchingGame = () => {
         setWinningModalOpen(false);
         setPagesComplete(0);
         refreshNumbers();
-        getNewPokemon();
+        getNewPrize();
     };
 
     const onPageComplete = () => {
@@ -159,7 +177,12 @@ const MatchingGame = () => {
         if (numbersCorrect.length === puzzlesPerPage) onPageComplete();
     };
 
-    useEffect(() => getNewPokemon(), []);
+    const getNewPrize = () => {
+        if (collectionType === "pokemon") getNewPokemon();
+        if (collectionType === "stars") getNewStar();
+    };
+
+    useEffect(() => getNewPrize(), []);
 
     return (
         <div className="puzzles">
@@ -174,7 +197,8 @@ const MatchingGame = () => {
             <WinningModal
                 open={winningModalOpen}
                 onPrizeAccepted={onPrizeAccepted}
-                pokemon={pokemon}
+                prize={prize}
+                collectionType={collectionType}
             />
             <p>Match the times tables with their answer!</p>
             <Grid columns={2} style={{ height: "100px", minWidth: "400px" }}>
