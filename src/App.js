@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ls from "local-storage";
 
 const App = () => {
-    const collectionType = ls("settings")?.collectionType;
+    const collectionType = ls("settings")?.collectionType ?? "stars";
     return (
         <div id="outer-container">
             <main id="page-wrap">

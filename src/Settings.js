@@ -4,21 +4,20 @@ import ls from "local-storage";
 
 const collectionOptions = [
     {
-        key: "pokemon",
-        text: "Pokemon",
-        value: "pokemon",
-    },
-    {
         key: "stars",
         text: "Stars",
         value: "stars",
+    },
+    {
+        key: "pokemon",
+        text: "Pokemon",
+        value: "pokemon",
     },
 ];
 
 const Settings = () => {
     const settings = ls("settings") ?? {};
-    const defaultType =
-        settings["collectionType"] ?? collectionOptions[0].value;
+    const defaultType = settings["collectionType"] ?? "stars";
 
     const onCollectionTypeChanged = (event, target) => {
         ls("settings", { ...settings, collectionType: target.value });

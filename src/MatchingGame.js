@@ -7,8 +7,9 @@ const P = new Pokedex();
 
 const { Row, Column } = Grid;
 
+const defaultCollectionType = "stars";
 const puzzlesPerPage = 6;
-const pagesPerPrize = 1;
+const pagesPerPrize = 5;
 const starData = [
     { id: "red", name: "Red" },
     { id: "orange", name: "Orange" },
@@ -62,7 +63,8 @@ const MatchingGame = () => {
     const [selectedSum, setSelectedSum] = useState(null);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [prize, setPrize] = useState(null);
-    const collectionType = ls("settings")?.collectionType;
+    const collectionType =
+        ls("settings")?.collectionType ?? defaultCollectionType;
 
     const progress = (pagesComplete / pagesPerPrize) * 100;
 
