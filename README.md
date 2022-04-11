@@ -1,3 +1,12 @@
+# Get 'em, got 'em
+
+A maths game which gives a prize after so many correct pages (currently 5 pages of 6 times tables). The prize is part of a collection that the user can try to complete.
+
+Currently only formatted for a mobile.
+
+Hosted here:
+https://get-em-got-em.web.app
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
